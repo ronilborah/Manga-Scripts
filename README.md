@@ -28,22 +28,6 @@ python3 manga_to_pdf.py -f .
 deactivate
 ```
 
-## Features
-
-- 📥 Download manga chapters as individual images
-- 📚 Convert chapter folders to PDF files
-- 🔄 Automatic retry for failed downloads
-- 🛡️ Cloudflare bypass using cloudscraper
-- 📊 Download summary with failed downloads report
-- 🎯 Support for decimal chapters (e.g., 103.5)
-- 🖼️ Multiple image format support (JPG, PNG, WebP)
-
-## Prerequisites
-
-- Python 3.7 or higher
-- Internet connection
-- macOS, Linux, or Windows
-
 ## Installation
 
 ### 1. Clone the Repository
