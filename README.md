@@ -6,11 +6,12 @@ A Python-based tool to download manga chapters from MangaPill.com and convert th
 
 ```bash
 # Navigate to where you want to save manga (can be anywhere)
-cd ~/Downloads  # or any folder you prefer
+cd ~/Documents
+
 
 # Clone the repository
-git clone <your-repo-url>
-cd <repo-name>
+git clone https://github.com/ronilborah/Manga-Scripts
+cd Manga-Scripts
 
 # Create and activate virtual environment
 python3 -m venv .venv
