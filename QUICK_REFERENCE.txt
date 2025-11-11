@@ -1,0 +1,89 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                  MANGA DOWNLOADER - QUICK START                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+🚀 LAUNCH THE APP
+═══════════════════════════════════════════════════════════════════
+   Double-click: "Manga Downloader.app"
+   (First time: Right-click → Open → Click "Open")
+
+📋 MENU OPTIONS
+═══════════════════════════════════════════════════════════════════
+   1. Download manga chapters
+   2. Convert chapters to PDF  
+   3. Both (Download + Convert)
+   4. Exit
+
+🔍 FINDING MANGA INFO
+═══════════════════════════════════════════════════════════════════
+   Example URL:
+   https://mangapill.com/chapters/2035-10103000/jigokuraku-chapter-103
+                                  ^^^^           ^^^^^^^^^^
+                               Manga ID        Manga Slug
+
+   What you need:
+   • Manga ID: 2035
+   • Manga Slug: jigokuraku
+
+📥 CHAPTER SELECTION OPTIONS
+═══════════════════════════════════════════════════════════════════
+   Option 1 - Single:       103
+   Option 2 - Multiple:     103 104 105 107.5
+   Option 3 - Range:        Start: 103  End: 110
+
+💾 SAVE LOCATION
+═══════════════════════════════════════════════════════════════════
+   Default:  Desktop (current directory)
+   Custom:   /Users/yourname/Documents/Manga
+
+📚 POPULAR MANGA EXAMPLES
+═══════════════════════════════════════════════════════════════════
+   One Piece:         ID: 1357    Slug: one-piece
+   Jujutsu Kaisen:    ID: 606     Slug: jujutsu-kaisen
+   Chainsaw Man:      ID: 1096    Slug: chainsaw-man
+   My Hero Academia:  ID: 13      Slug: my-hero-academia
+
+🎯 QUICK TIPS
+═══════════════════════════════════════════════════════════════════
+   ✓ Support decimal chapters (e.g., 103.5)
+   ✓ App installs missing packages automatically
+   ✓ Downloads save as: [slug]_Chapter_XXX/
+   ✓ PDFs save as: Chapter_XXX.pdf
+   ✓ App is fully portable - copy anywhere!
+
+🔧 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════
+   Security warning?
+   → Right-click → Open → Click "Open"
+   
+   Downloads failing?
+   → Check internet connection
+   → Verify manga ID and slug are correct
+   → Try chapter URL in browser first
+   
+   Python errors?
+   → App auto-installs packages
+   → Close and reopen if first install
+
+📁 OUTPUT STRUCTURE
+═══════════════════════════════════════════════════════════════════
+   Downloads/
+   ├── jigokuraku_Chapter_103/
+   │   ├── page_001.jpg
+   │   ├── page_002.jpg
+   │   └── ...
+   └── Chapter_103.pdf
+
+🎨 OPTIONAL: INSTALL TO APPLICATIONS
+═══════════════════════════════════════════════════════════════════
+   Run in Terminal:
+   cd /Users/ronil/Desktop/Manga-Scripts
+   ./install_to_applications.sh
+
+   Or manually:
+   Copy "Manga Downloader.app" → /Applications/
+
+═══════════════════════════════════════════════════════════════════
+   📖 Full Guide: APP_USAGE_GUIDE.md
+   🎉 Setup Info: SETUP_COMPLETE.md
+═══════════════════════════════════════════════════════════════════
