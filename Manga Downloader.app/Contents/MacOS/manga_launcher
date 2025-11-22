@@ -22,6 +22,7 @@ cd ~/Desktop
 # Global variables
 manga_id=""
 manga_slug=""
+chapter_prefix="10"  # Usually 10, sometimes 20
 chapter_args=""
 output_dir=""
 
@@ -122,6 +123,28 @@ get_manga_details() {
             echo "  Manga ID: $manga_id"
             echo "  Manga Slug: $manga_slug"
             echo ""
+            
+            # Ask for chapter prefix
+            while true; do
+                echo "What is the chapter URL prefix for this manga?"
+                echo "  1) 10 (most common - e.g., 1-10364000)"
+                echo "  2) 20 (e.g., 1-20364000)"
+                echo ""
+                read -p "Enter 1 or 2 [default: 1]: " prefix_choice
+                
+                if [ -z "$prefix_choice" ] || [[ "$prefix_choice" == "1" ]]; then
+                    chapter_prefix="10"
+                    break
+                elif [[ "$prefix_choice" == "2" ]]; then
+                    chapter_prefix="20"
+                    break
+                else
+                    echo "❌ Invalid choice. Please enter 1 or 2."
+                    echo ""
+                fi
+            done
+            echo ""
+            
             read -p "Is this correct? (y/n): " confirm
             
             if [[ $confirm == "y" || $confirm == "Y" ]]; then
@@ -153,10 +176,32 @@ get_manga_details() {
             continue
         fi
         
+        # Ask for chapter prefix
+        while true; do
+            echo ""
+            echo "What is the chapter URL prefix for this manga?"
+            echo "  1) 10 (most common - e.g., 1-10364000)"
+            echo "  2) 20 (e.g., 1-20364000)"
+            echo ""
+            read -p "Enter 1 or 2 [default: 1]: " prefix_choice
+            
+            if [ -z "$prefix_choice" ] || [[ "$prefix_choice" == "1" ]]; then
+                chapter_prefix="10"
+                break
+            elif [[ "$prefix_choice" == "2" ]]; then
+                chapter_prefix="20"
+                break
+            else
+                echo "❌ Invalid choice. Please enter 1 or 2."
+                echo ""
+            fi
+        done
+        
         echo ""
         echo "✓ Configuration set:"
         echo "  Manga ID: $manga_id"
         echo "  Manga Slug: $manga_slug"
+        echo "  Chapter Prefix: $chapter_prefix"
         echo ""
         read -p "Is this correct? (y/n): " confirm
         
@@ -328,8 +373,10 @@ get_output_directory() {
                     echo "❌ Using current directory instead."
                     output_dir="."
                 else
-                    # Expand ~ to home directory and remove escape characters
-                    output_dir="${custom_dir/#\~/$HOME}"
+                    # Remove quotes, expand ~, and remove escape characters
+                    output_dir="${custom_dir//\'/}"  # Remove single quotes
+                    output_dir="${custom_dir//\"/}"  # Remove double quotes
+                    output_dir="${output_dir/#\~/$HOME}"  # Expand ~
                     output_dir="${output_dir//\\/}"  # Remove backslashes
                     
                     # Try to create directory
@@ -364,10 +411,10 @@ run_downloader() {
     echo ""
     
     # Debug: Show what we're passing
-    # echo "DEBUG: manga_id=$manga_id manga_slug=$manga_slug chapter_args=$chapter_args output_dir=$output_dir"
+    # echo "DEBUG: manga_id=$manga_id manga_slug=$manga_slug chapter_prefix=$chapter_prefix chapter_args=$chapter_args output_dir=$output_dir"
     
     # Run the downloader with user's manga details passed as environment variables
-    MANGA_ID="$manga_id" MANGA_SLUG="$manga_slug" python3 "$RESOURCES_DIR/manga_downloader.py" $chapter_args -o "$output_dir"
+    MANGA_ID="$manga_id" MANGA_SLUG="$manga_slug" CHAPTER_PREFIX="$chapter_prefix" python3 "$RESOURCES_DIR/manga_downloader.py" $chapter_args -o "$output_dir"
     
     download_exit_code=$?
     
@@ -392,8 +439,11 @@ run_pdf_converter() {
                 return 1
             fi
             
-            pdf_folder="${pdf_folder/#\~/$HOME}"
-            pdf_folder="${pdf_folder//\\/}"
+            # Remove quotes, expand ~, and remove backslashes
+            pdf_folder="${pdf_folder//\'/}"  # Remove single quotes
+            pdf_folder="${pdf_folder//\"/}"  # Remove double quotes
+            pdf_folder="${pdf_folder/#\~/$HOME}"  # Expand ~
+            pdf_folder="${pdf_folder//\\/}"  # Remove backslashes
             
             if [ -n "$pdf_folder" ] && [ -d "$pdf_folder" ]; then
                 break

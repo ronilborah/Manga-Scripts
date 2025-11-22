@@ -27,6 +27,7 @@ from urllib.parse import urljoin
 # ============================================================
 MANGA_ID = os.environ.get("MANGA_ID", "2035")
 MANGA_SLUG = os.environ.get("MANGA_SLUG", "jigokuraku")
+CHAPTER_PREFIX = os.environ.get("CHAPTER_PREFIX", "10")  # Usually "10", sometimes "20"
 # ============================================================
 
 def check_and_install_packages():
@@ -133,7 +134,7 @@ def download_chapter(chapter_number, output_dir='downloads', failed_downloads=No
     if failed_downloads is None:
         failed_downloads = []
     
-    chapter_id = f"10{int(chapter_number):03d}000"
+    chapter_id = f"{CHAPTER_PREFIX}{int(chapter_number):03d}000"
     chapter_url = f"https://mangapill.com/chapters/{MANGA_ID}-{chapter_id}/{MANGA_SLUG}-chapter-{int(chapter_number)}"
     
     print(f"\n{'='*60}")
