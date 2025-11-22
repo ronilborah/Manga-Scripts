@@ -143,6 +143,52 @@ Chapter_104.pdf
 
 ---
 
+## 🔄 Updating Scripts
+
+### For macOS App
+
+**Method 1: Edit app bundle directly**
+
+```bash
+# Edit the scripts inside the app
+code "Manga Downloader.app/Contents/Resources/manga_downloader.py"
+code "Manga Downloader.app/Contents/Resources/manga_to_pdf.py"
+
+# Refresh the app
+touch "Manga Downloader.app"
+```
+
+**Method 2: Edit root scripts, then sync (Recommended)**
+
+```bash
+# 1. Edit the standalone scripts
+code manga_downloader.py
+code manga_to_pdf.py
+
+# 2. Copy updates to app bundle
+cp manga_downloader.py "Manga Downloader.app/Contents/Resources/"
+cp manga_to_pdf.py "Manga Downloader.app/Contents/Resources/"
+
+# 3. Refresh the app
+touch "Manga Downloader.app"
+
+# 4. Update Applications folder if installed there
+cp -R "Manga Downloader.app" /Applications/
+```
+
+**For launcher/menu changes:**
+
+```bash
+# Edit the launcher
+code "Manga Downloader.app/Contents/MacOS/manga_launcher"
+
+# Make executable and refresh
+chmod +x "Manga Downloader.app/Contents/MacOS/manga_launcher"
+touch "Manga Downloader.app"
+```
+
+---
+
 ## 📝 Complete Workflow
 
 ### Using the App
