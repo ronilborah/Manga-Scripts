@@ -1,175 +1,165 @@
 # Manga Downloader & PDF Converter
 
-A Python-based tool to download manga chapters from MangaPill.com and convert them into PDF files.
+Download manga chapters from MangaPill.com and convert them to PDF files - available as both a macOS app and Python scripts.
 
-## Quick Start (macOS)
+## 🚀 Quick Start (macOS App - Recommended)
+
+### Using the App
+
+1. **Double-click** `Manga Downloader.app`
+2. Choose your action:
+   - Download chapters
+   - Convert chapters to PDF
+   - Both (Download + Convert)
+3. Follow the interactive prompts
+
+### Finding Manga Information
+
+When prompted, you can either:
+
+- **Paste a MangaPill URL** (easiest): `https://mangapill.com/chapters/2035-10103000/jigokuraku-chapter-103`
+- **Enter manually**: Manga ID (`2035`) and Slug (`jigokuraku`)
+
+### Chapter URL Prefix
+
+Some manga use different URL prefixes:
+
+- **Option 1: 10** (most common) - e.g., `1-10364000`
+- **Option 2: 20** (some manga like Berserk) - e.g., `1-20364000`
+
+The app will prompt you to select the correct prefix.
+
+### Chapter Selection Examples
+
+- **Single**: `103`
+- **Multiple**: `103 104 105 107.5`
+- **Range**: Start: `103`, End: `110`
+
+### Popular Manga Examples
+
+| Manga          | ID   | Slug           |
+| -------------- | ---- | -------------- |
+| One Piece      | 1357 | one-piece      |
+| Jujutsu Kaisen | 606  | jujutsu-kaisen |
+| Chainsaw Man   | 1096 | chainsaw-man   |
+| Berserk        | 1    | berserk        |
+
+---
+
+## 🐍 Python Scripts (Advanced)
+
+### Installation
 
 ```bash
-# Navigate to where you want to save manga (can be anywhere)
-cd ~/Documents
-
-
-# Clone the repository
 git clone https://github.com/ronilborah/Manga-Scripts
 cd Manga-Scripts
 
-# Create and activate virtual environment
+# Create virtual environment
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # macOS/Linux
+# or .venv\Scripts\activate  # Windows
 
-# Edit manga_downloader.py to set MANGA_ID and MANGA_SLUG (see Configuration section)
-
-# Download chapters (example: chapters 100-110)
-python3 manga_downloader.py -r 100 110
-
-# Convert to PDFs
-python3 manga_to_pdf.py -f .
-
-# Deactivate when done
-deactivate
-```
-
-## Installation
-
-### 1. Clone the Repository
-
-```bash
-git clone <your-repo-url>
-cd <repo-name>
-```
-
-### 2. Create a Virtual Environment
-
-**macOS/Linux:**
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-**Windows:**
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-```
-
-### 3. Install Required Packages
-
-The scripts will auto-install missing packages when run, but you can manually install them:
-
-```bash
+# Packages auto-install on first run, or install manually:
 pip install requests beautifulsoup4 lxml cloudscraper Pillow
 ```
 
-## Usage
+### Configuration
 
-### Manga Downloader
-
-#### Configuration
-
-Before downloading, edit the top of `manga_downloader.py` to set your target manga:
+Edit `manga_downloader.py`:
 
 ```python
-MANGA_ID = "2035"        # Found in the manga URL
-MANGA_SLUG = "jigokuraku"  # Found in the manga URL
+MANGA_ID = "2035"           # From URL
+MANGA_SLUG = "jigokuraku"   # From URL
+CHAPTER_PREFIX = "10"       # Usually "10", sometimes "20"
 ```
 
-**How to find these values:**
+### Usage
 
-Visit the manga chapter page on MangaPill.com. The URL structure is:
-```
-https://mangapill.com/chapters/{MANGA_ID}-10{chapter}000/{MANGA_SLUG}-chapter-{chapter}
-```
+**Download chapters:**
 
-Example: `https://mangapill.com/chapters/2035-10103000/jigokuraku-chapter-103`
-- `MANGA_ID` = `2035`
-- `MANGA_SLUG` = `jigokuraku`
-
-#### Download Commands
-
-**Download a single chapter:**
 ```bash
-python manga_downloader.py -c 103
+python3 manga_downloader.py -c 103              # Single chapter
+python3 manga_downloader.py -c 103 -c 104       # Multiple
+python3 manga_downloader.py -r 103 110          # Range
+python3 manga_downloader.py -c 103 -o ~/manga   # Custom location
 ```
 
-**Download multiple specific chapters:**
+**Convert to PDF:**
+
 ```bash
-python manga_downloader.py -c 103 -c 104 -c 105
+python3 manga_to_pdf.py -f .                    # Current directory
+python3 manga_to_pdf.py -f /path/to/folder      # Specific folder
 ```
 
-**Download a range of chapters:**
-```bash
-python manga_downloader.py -r 103 110
+### Output Structure
+
+**Downloaded chapters:**
+
+```
+jigokuraku_Chapter_103/
+  ├── page_001.jpg
+  ├── page_002.jpg
+  └── ...
 ```
 
-**Download decimal chapters:**
-```bash
-python manga_downloader.py -c 103.5
-```
+**PDFs:**
 
-**Specify custom output directory:**
-```bash
-python manga_downloader.py -c 103 -o ~/Downloads/manga
-```
-
-#### Output Structure
-
-Downloaded chapters are saved in folders named:
-```
-{manga_slug}_Chapter_{number}/
-  page_001.jpg
-  page_002.jpg
-  ...
-```
-
-Example: `jigokuraku_Chapter_103/`
-
-### PDF Converter
-
-After downloading chapters, convert them to PDF files:
-
-#### Commands
-
-**Interactive mode (prompts for folder):**
-```bash
-python manga_to_pdf.py
-```
-
-**Specify folder directly:**
-```bash
-python manga_to_pdf.py -f /path/to/manga/folder
-```
-
-**Use current directory:**
-```bash
-cd /path/to/manga/folder
-python manga_to_pdf.py -f .
-```
-
-#### Output
-
-PDFs are created in the parent folder:
 ```
 Chapter_103.pdf
 Chapter_104.pdf
-Chapter_105.pdf
 ```
 
-## Complete Workflow Example
+---
+
+## ✨ Features
+
+✅ **Portable macOS App** - All dependencies included  
+✅ **Interactive Terminal UI** - Easy-to-follow prompts  
+✅ **URL Parsing** - Paste full MangaPill URLs  
+✅ **Flexible Chapter Selection** - Single, multiple, or ranges  
+✅ **Decimal Chapter Support** - Handle chapters like 103.5  
+✅ **Auto Package Installation** - Installs missing dependencies  
+✅ **Path Handling** - Handles quoted paths and spaces  
+✅ **Back Navigation** - Type 'back' at any prompt  
+✅ **Restart Option** - Continue downloading without relaunching
+
+---
+
+## 🛠️ Troubleshooting
+
+**App won't open on first launch:**
+
+- Right-click → Open → Click "Open" to bypass Gatekeeper
+
+**Python environment issues:**
+
+- Scripts automatically use `--user` flag for package installation
+- Works with macOS externally-managed Python environments
+
+**Path errors:**
+
+- Paths with spaces are supported
+- Quotes in pasted paths are automatically removed
+
+---
+
+## 📝 Complete Workflow
+
+### Using the App
+
+1. Double-click `Manga Downloader.app`
+2. Paste manga URL or enter ID/Slug
+3. Select chapter prefix (10 or 20)
+4. Choose chapters to download
+5. Select output location
+6. Wait for download to complete
+7. Convert to PDF if desired
+
+### Using Python Scripts
 
 ```bash
-# 1. Activate virtual environment
-source .venv/bin/activate  # macOS/Linux
-# or
-.venv\Scripts\activate     # Windows
-
-# 2. Edit manga_downloader.py to set MANGA_ID and MANGA_SLUG
-
-# 3. Download chapters
-python manga_downloader.py -r 100 110
-
-# 4. Convert to PDFs
-python manga_to_pdf.py -f .
-
-# 5. Deactivate virtual environment when done
+source .venv/bin/activate
+python3 manga_downloader.py -r 100 110
+python3 manga_to_pdf.py -f .
 deactivate
 ```
