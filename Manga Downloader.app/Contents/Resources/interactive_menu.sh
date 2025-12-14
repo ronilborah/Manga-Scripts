@@ -3,6 +3,46 @@
 # Get the Resources directory
 RESOURCES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Set up / reuse a dedicated virtual environment
+# We keep it in the user's home directory so the app bundle
+# does not need write permissions to its own Contents folder.
+VENV_DIR="$HOME/.manga_downloader_venv"
+
+# Find a base Python interpreter to create the venv with
+if command -v python3 >/dev/null 2>&1; then
+    BASE_PYTHON="python3"
+elif command -v python >/dev/null 2>&1; then
+    BASE_PYTHON="python"
+else
+    echo "❌ Python 3 is not installed or not found in PATH."
+    echo "   Please install Python 3 and try again."
+    read -n 1 -s -p "Press any key to exit..."
+    echo ""
+    exit 1
+fi
+
+# Create the venv if it does not exist yet
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Setting up Python virtual environment for Manga Downloader..."
+    "$BASE_PYTHON" -m venv "$VENV_DIR" || {
+        echo "❌ Failed to create virtual environment at $VENV_DIR"
+        read -n 1 -s -p "Press any key to exit..."
+        echo ""
+        exit 1
+    }
+fi
+
+# Use the venv's python directly (no need to modify shell PATH)
+VENV_PYTHON="$VENV_DIR/bin/python"
+
+if [ ! -x "$VENV_PYTHON" ]; then
+    echo "❌ Virtual environment at $VENV_DIR is missing its Python binary."
+    echo "   Try deleting $VENV_DIR and re-running the app."
+    read -n 1 -s -p "Press any key to exit..."
+    echo ""
+    exit 1
+fi
+
 # Change to Desktop for default download location
 cd ~/Desktop
 
@@ -401,7 +441,7 @@ run_downloader() {
     # echo "DEBUG: manga_id=$manga_id manga_slug=$manga_slug chapter_prefix=$chapter_prefix chapter_args=$chapter_args output_dir=$output_dir"
     
     # Run the downloader with user's manga details passed as environment variables
-    MANGA_ID="$manga_id" MANGA_SLUG="$manga_slug" CHAPTER_PREFIX="$chapter_prefix" python3 "$RESOURCES_DIR/manga_downloader.py" $chapter_args -o "$output_dir"
+    MANGA_ID="$manga_id" MANGA_SLUG="$manga_slug" CHAPTER_PREFIX="$chapter_prefix" "$VENV_PYTHON" "$RESOURCES_DIR/manga_downloader.py" $chapter_args -o "$output_dir"
     
     download_exit_code=$?
     
@@ -445,7 +485,7 @@ run_pdf_converter() {
     
     echo ""
     echo "Converting chapters to PDF..."
-    python3 "$RESOURCES_DIR/manga_to_pdf.py" -f "$pdf_folder"
+    "$VENV_PYTHON" "$RESOURCES_DIR/manga_to_pdf.py" -f "$pdf_folder"
 }
 
 # Main program loop - allows restarting
