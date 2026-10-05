@@ -192,6 +192,8 @@ def process_chapters(parent_folder):
     success_count = 0
     failed_chapters = []
     
+    parent_folder_name = os.path.basename(os.path.normpath(parent_folder))
+    
     for subdir in subdirs:
         chapter_path = os.path.join(parent_folder, subdir)
         chapter_number = get_chapter_number(subdir)
@@ -209,7 +211,7 @@ def process_chapters(parent_folder):
         print(f"  Found {len(image_files)} images")
         
         # Create PDF filename
-        pdf_filename = f"Chapter_{chapter_number}.pdf"
+        pdf_filename = f"{parent_folder_name} {chapter_number}.pdf"
         pdf_path = os.path.join(parent_folder, pdf_filename)
         
         # Check if PDF already exists
